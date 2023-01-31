@@ -94,7 +94,7 @@ else if (Color_Method == "Equal brightness") {
 	setMinAndMax(minDisplay, maxDisplay);
 	
 	Dialog.create("Select color scheme");
-	Dialog.addChoice("Display LUT:", newArray("Fire", "Rainbow RGB"));
+	Dialog.addChoice("Display LUT:", newArray("Fire", "Rainbow RGB", "Rainbow Smooth"));
 	Dialog.show();
 	
 	Color_LUT  = Dialog.getChoice();
@@ -103,7 +103,7 @@ else if (Color_Method == "Equal brightness") {
 	
 	// create a color calibration bar 
 	// (change the parameters to suit your preference)
-	run("Calibration Bar...", "location=[Upper Right] fill=Black label=White number=5 decimal=2 font=12 zoom=1 overlay");
+	run("Calibration Bar...", "location=[Upper Right] fill=Black label=White number=5 decimal=2 font=10 zoom=1 overlay");
 	// save the bar overlay in the ROI Mgr
 	run("To ROI Manager");
 
@@ -124,10 +124,10 @@ else if (Color_Method == "Equal brightness") {
 
 	// save images
 	selectWindow("Color");
-	saveAs("Tiff", outputDir  + File.separator + basename + "_Color_RGB.tif");
+	saveAs("Tiff", outputDir  + File.separator + basename + Color_LUT + "_Color_RGB.tif");
 	
 	selectWindow("ColorWithBar");
-	saveAs("Tiff", outputDir  + File.separator + basename + "_Color_with_bar.tif");
+	saveAs("Tiff", outputDir  + File.separator + basename + Color_LUT + "_Color_with_bar.tif");
 
 }
 else {
