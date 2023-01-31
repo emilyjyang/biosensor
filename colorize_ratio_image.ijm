@@ -124,10 +124,10 @@ else if (Color_Method == "Equal brightness") {
 
 	// save images
 	selectWindow("Color");
-	saveAs("Tiff", outputDir  + File.separator + basename + Color_LUT + "_Color_RGB.tif");
+	saveAs("Tiff", outputDir  + File.separator + basename + "_" + Color_LUT + "_Color_RGB.tif");
 	
 	selectWindow("ColorWithBar");
-	saveAs("Tiff", outputDir  + File.separator + basename + Color_LUT + "_Color_with_bar.tif");
+	saveAs("Tiff", outputDir  + File.separator + basename + "_" + Color_LUT + "_Color_with_bar.tif");
 
 }
 else {
