@@ -84,19 +84,29 @@ denom_areas <- denom_sums %>%
   select(contains("Area"))
 denomArea_cols <- colnames(denom_areas)
 
-# get ROI names -- for new style ROI names (Area(ROI_1)_sum)
-Area_rois <- str_replace(Area_cols, "Area\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+# Separate Cell number and ROI number
+Area_Cell <- sapply(str_split(Area_cols, "-"), "[[", 1)
+Area_ROI <- sapply(str_split(Area_cols, "-"), "[[", 2)
+numArea_Cell <- sapply(str_split(numArea_cols, "-"), "[[", 1)
+numArea_ROI <- sapply(str_split(numArea_cols, "-"), "[[", 2)
+denomArea_Cell <- sapply(str_split(denomArea_cols, "-"), "[[", 1)
+denomArea_ROI <- sapply(str_split(denomArea_cols, "-"), "[[", 2)
+
+# get Cell ID -- for new style ROI names (Area(Cell_1;ROI_1)_sum)
+Area_CellID <- str_replace(Area_Cell, "Area\\(Cell_([0-9]{1,2})", "\\1") %>%
   as.numeric()
-numArea_rois <- str_replace(numArea_cols, "Area\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+numArea_CellID <- str_replace(numArea_Cell, "Area\\(Cell_([0-9]{1,2})", "\\1") %>%
   as.numeric()
-denomArea_rois <- str_replace(denomArea_cols, "Area\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+denomArea_CellID <- str_replace(denomArea_Cell, "Area\\(Cell_([0-9]{1,2})", "\\1") %>%
   as.numeric()
 
-# get ROI names -- for old style ROI names (IJ default, Area1_sum)
-# numArea_rois <- str_replace(numArea_cols, "Area([0-9]{1,2})_sum", "\\1") %>%
-#   as.numeric()
-# denomArea_rois <- str_replace(denomArea_cols, "Area([0-9]{1,2})_sum", "\\1") %>%
-  #   as.numeric()
+# get ROI names -- for new style ROI names (Area(Cell_1;ROI_1)_sum)
+Area_rois <- str_replace(Area_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+  as.numeric()
+numArea_rois <- str_replace(numArea_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+  as.numeric()
+denomArea_rois <- str_replace(denomArea_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+  as.numeric()
 
 # values are in the 1st row, all columns
 Area_vals <- meas_areas[1,] %>% as.numeric()
@@ -110,31 +120,43 @@ denomArea_table <- bind_cols(ROI = denomArea_rois, Denom_Area = denomArea_vals)
 meas_intdens <- meas_sums %>% 
   select(contains("IntDen") & !contains("Raw"))
 IntDen_cols <- colnames(meas_intdens)
-IntDen_rois <- str_replace(IntDen_cols, "IntDen\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+IntDen_Cell <- sapply(str_split(IntDen_cols, "-"), "[[", 1)
+IntDen_ROI <- sapply(str_split(IntDen_cols, "-"), "[[", 2)
+IntDen_CellID <- str_replace(IntDen_Cell, "IntDen\\(Cell_([0-9]{1,2})", "\\1") %>%
+  as.numeric()
+IntDen_rois <- str_replace(IntDen_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
   as.numeric()
 IntDen_vals <- meas_intdens[1,] %>% as.numeric()
-IntDen_table <- bind_cols(ROI = IntDen_rois, IntDen = IntDen_vals)
+IntDen_table <- bind_cols(CellID = IntDen_CellID ,ROI = IntDen_rois, IntDen = IntDen_vals)
 
 
 num_intdens <- num_sums %>% 
   select(contains("IntDen") & !contains("Raw"))
 numIntDen_cols <- colnames(num_intdens)
-numIntDen_rois <- str_replace(numIntDen_cols, "IntDen\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+numIntDen_Cell <- sapply(str_split(numIntDen_cols, "-"), "[[", 1)
+numIntDen_ROI <- sapply(str_split(numIntDen_cols, "-"), "[[", 2)
+numIntDen_CellID <- str_replace(numIntDen_Cell, "IntDen\\(Cell_([0-9]{1,2})", "\\1") %>%
+  as.numeric()
+numIntDen_rois <- str_replace(numIntDen_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
   as.numeric()
 # numIntDen_rois <- str_replace(numIntDen_cols, "IntDen([0-9]{1,2})_sum", "\\1") %>%
 #   as.numeric()
 numIntDen_vals <- num_intdens[1,] %>% as.numeric()
-numIntDen_table <- bind_cols(ROI = numIntDen_rois, Num_IntDen = numIntDen_vals)
+numIntDen_table <- bind_cols(CellID = numIntDen_CellID, ROI = numIntDen_rois, Num_IntDen = numIntDen_vals)
 
 denom_intdens <- denom_sums %>% 
   select(contains("IntDen") & !contains("Raw"))
 denomIntDen_cols <- colnames(denom_intdens)
-denomIntDen_rois <- str_replace(denomIntDen_cols, "IntDen\\(ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
+denomIntDen_Cell <- sapply(str_split(denomIntDen_cols, "-"), "[[", 1)
+denomIntDen_ROI <- sapply(str_split(denomIntDen_cols, "-"), "[[", 2)
+denomIntDen_CellID <- str_replace(denomIntDen_Cell, "IntDen\\(Cell_([0-9]{1,2})", "\\1") %>%
+  as.numeric()
+denomIntDen_rois <- str_replace(denomIntDen_ROI, "ROI_([0-9]{1,2})\\)_sum", "\\1") %>%
   as.numeric()
 # denomIntDen_rois <- str_replace(denomIntDen_cols, "IntDen([0-9]{1,2})_sum", "\\1") %>%
 #   as.numeric()
 denomIntDen_vals <- denom_intdens[1,] %>% as.numeric()
-denomIntDen_table <- bind_cols(ROI = denomIntDen_rois, Denom_IntDen = denomIntDen_vals)
+denomIntDen_table <- bind_cols(CellID = denomIntDen_CellID, ROI = denomIntDen_rois, Denom_IntDen = denomIntDen_vals)
 
 # merge the columns by the only common column, ROI
 # calculate the weighted mean intensity for num and denom
@@ -165,6 +187,4 @@ outputDir <- tk_choose.dir(default = "", caption = "Please OPEN the output folde
 nameLength <- nchar(basename(measfile)) - 4
 outputFile = paste(substring(basename(measfile),1,nameLength),"tidied.csv")
 write_csv(combined_tidy,file.path(outputDir, outputFile))
-
-
 
