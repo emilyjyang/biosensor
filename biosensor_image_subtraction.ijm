@@ -186,7 +186,7 @@ else if (n >= 1) {
 		for (i = 0; i < n; i++) {
 		    roiManager("Select", i);
 		    cellNum = i+1;
-		    newName = "Cell_"+cellNum+"_ROI_1";
+		    newName = "Cell_"+cellNum+"-ROI_1";
 		    roiManager("Rename", newName);
 		}
 	}
@@ -204,7 +204,7 @@ else if (n >= 1) {
 				roiNum = j+1;
 			    roiIndex = (i * ROIsPerCell) + j;
 			    roiManager("Select", roiIndex);
-			    newName = "Cell_"+cellNum+"_ROI_"+roiNum;
+			    newName = "Cell_"+cellNum+"-ROI_"+roiNum;
 	    		roiManager("Rename", newName);
 			}
 		}	
